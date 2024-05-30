@@ -20,3 +20,8 @@ The project leverages the following technologies:
 
 jesse@leadmagic.io
 L8xrndj@QLM&fax5
+
+https://outbound.leadmagic.io (sign-up)
+
+https://www.linkedin.com/sales/search/people?viewAllFilters=true
+
