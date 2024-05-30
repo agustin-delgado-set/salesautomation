@@ -17,3 +17,6 @@ The project leverages the following technologies:
 **Sentry:** Error tracking and performance monitoring.
 **Sendgrid:** Sendgrid key
 
+
+jesse@leadmagic.io
+L8xrndj@QLM&fax5
