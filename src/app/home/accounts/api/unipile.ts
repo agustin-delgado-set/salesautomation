@@ -26,6 +26,31 @@ export const connectLinkedinAccount = async (username: string, password: string)
   }
 }
 
+export const connectLinkedinAccountWithCookies = async (li_at: string, li_a?: string) => {
+  const data = {
+    provider: 'LINKEDIN',
+    access_token: li_at,
+    premium_token: li_a,
+  };
+
+  try {
+    const res = await fetch(`https://${UNIPILE_API_URL}/api/v1/accounts`, {
+      method: 'POST',
+      headers: {
+        'X-API-KEY': UNIPILE_API_KEY,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+    return result
+  } catch (err) {
+    throw err
+  }
+}
+
 export const reconnectLinkedinAccount = async (username: string, password: string, accountId: string) => {
   const data = {
     provider: 'LINKEDIN',

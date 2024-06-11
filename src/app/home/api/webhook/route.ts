@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     console.log('Webhook received:', data);
 
-    if (data?.AccountStatus?.message === 'DELETED') return
+    if (data?.AccountStatus?.message === 'DELETED') return NextResponse.json({ message: 'Account deleted successfully' }, { status: 200 });
 
     const { error } = await supabase
       .from('accounts')

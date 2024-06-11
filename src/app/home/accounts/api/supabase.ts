@@ -40,7 +40,7 @@ export const deleteSupabaseAccount = async (accountId: string) => {
   }
 }
 
-export const listenSupabaseChanges = async (table: string, callback: (payload: any) => void) => {
+export const listenSupabaseChanges = (table: string, callback: (payload: any) => void) => {
   const subscription = supabase
     .channel(table)
     .on(
@@ -58,4 +58,16 @@ export const listenSupabaseChanges = async (table: string, callback: (payload: a
     .subscribe();
 
   return subscription
+}
+
+export const checkAccountIsLinkedToUser = async (userEmail: string, accountId: string) => {
+  try {
+    const { data, error } = await supabase.from('accounts').select().eq('user_email', userEmail).eq('account_id', accountId)
+
+    if (error) throw error
+
+    return data.length > 0
+  } catch (err) {
+    throw err
+  }
 }

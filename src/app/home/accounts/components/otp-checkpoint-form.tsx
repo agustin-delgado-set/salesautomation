@@ -93,6 +93,5 @@ export default function OTPCheckpointForm({ checkpoint, setTab }: { checkpoint: 
         </Button>
       </form>
     </Form>
-
   )
 }

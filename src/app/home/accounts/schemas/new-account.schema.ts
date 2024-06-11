@@ -8,4 +8,9 @@ export const newAccountSchema = z.object({
   confirmPassword: z.string().min(1, "Confirm password is required"),
 })
 
+export const cookiesNewAccountSchema = z.object({
+  li_at: z.string().min(1, "li_at is required"),
+  li_a: z.string()
+})
+
 export type NewAccount = z.infer<typeof newAccountSchema>

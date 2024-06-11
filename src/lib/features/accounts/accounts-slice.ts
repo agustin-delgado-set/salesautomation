@@ -5,10 +5,12 @@ import { createSelector } from "reselect";
 interface AccountsState {
   accounts: AdaptedAccount[];
   loadingAccounts: boolean;
+  selectedAccount: string;
 }
 
 const initialState: AccountsState = {
   accounts: [],
+  selectedAccount: "",
   loadingAccounts: true,
 };
 
@@ -34,16 +36,21 @@ export const accountsSlice = createSlice({
         return account;
       });
     },
+    setSelectedAccount: (state, action) => {
+      state.selectedAccount = action.payload;
+    }
   },
 });
 
 const selectAccounts = (state: { accounts: { accounts: any; }; }) => state.accounts.accounts;
 const selectLoadingAccounts = (state: { accounts: { loadingAccounts: any; }; }) => state.accounts.loadingAccounts;
+const selectSelectedAccount = (state: { accounts: { selectedAccount: any; }; }) => state.accounts.selectedAccount;
 
-export const selectAccountsData = createSelector([selectAccounts, selectLoadingAccounts], (accounts, loadingAccounts) => ({
+export const selectAccountsData = createSelector([selectAccounts, selectLoadingAccounts, selectSelectedAccount], (accounts, loadingAccounts, selectedAccount) => ({
   accounts,
-  loadingAccounts
+  loadingAccounts,
+  selectedAccount
 }));
 
-export const { setAccounts, addAccount, deleteStateAccount, updateStateAccount } = accountsSlice.actions;
+export const { setAccounts, addAccount, deleteStateAccount, updateStateAccount, setSelectedAccount } = accountsSlice.actions;
 export default accountsSlice.reducer;

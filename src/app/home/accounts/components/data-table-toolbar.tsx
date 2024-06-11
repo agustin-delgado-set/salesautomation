@@ -21,7 +21,7 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
     setModalState({
       open: true,
       title: `Let's add a LinkedIn account`,
-      description: 'We need your LinkedIn credentials to be able to interact with your account. We will never share your information with anyone.',
+      description: 'You can connect your LinkedIn account by entering your LinkedIn email and password or copying your LinkedIn session cookie.',
       view: <NewAccountModal />,
     });
   }

@@ -14,7 +14,7 @@ import { addAccount } from "../api/supabase";
 import { closeModal, getModalState } from "@/lib/store/modal-store";
 import { errors } from "@/lib/errors/errors";
 
-export default function NewAccountForm({ setCheckpoint, setTab }: { setCheckpoint: any, setTab: Dispatch<SetStateAction<string>> }) {
+export default function NewAccountForm({ setCheckpoint, setTab }: { setCheckpoint: Dispatch<SetStateAction<null>>, setTab: Dispatch<SetStateAction<string>> }) {
   const { payload } = getModalState()
   const { user } = useUser()
 
@@ -50,13 +50,14 @@ export default function NewAccountForm({ setCheckpoint, setTab }: { setCheckpoin
         await addAccount(userEmail, result.account_id)
 
         toast(`Account ${payload?.reconnect ? "reconnected" : "connected"} successfully`, { description: "You can now start using your LinkedIn account" })
-
         return closeModal()
       }
 
       setCheckpoint(result)
 
       if (result?.checkpoint?.type === "OTP" || result?.checkpoint?.type === "2FA") return setTab("checkpoint")
+      if (result?.checkpoint?.type === "PHONE_REGISTER") return setTab("phone-register")
+      if (result?.checkpoint?.type === "CAPTCHA") return toast("Failed to connect account", { description: "Try connecting with cookies" })
 
       return toast("Failed to connect account", { description: errors[result.type as keyof typeof errors] })
     } catch (err) {

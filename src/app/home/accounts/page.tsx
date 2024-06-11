@@ -9,6 +9,7 @@ import Dialog from "@/components/dialog";
 
 export default function Accounts() {
   const { accounts, loadingAccounts } = useAppSelector(selectAccountsData);
+  console.log(accounts, loadingAccounts)
   return (
     <>
       <AccountsTable data={accounts} columns={columns} loading={loadingAccounts} />

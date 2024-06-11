@@ -1,11 +1,12 @@
 "use client"
 
 import { AdaptedAccount } from "@/app/home/accounts/adapters/accounts-adapter"
+import { selectAccountsData, setSelectedAccount } from "@/lib/features/accounts/accounts-slice"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { cn } from "@/lib/utils"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Avatar, AvatarFallback } from "./ui/avatar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { RotateCw } from "lucide-react"
 import { Skeleton } from "./ui/skeleton"
 
 interface AccountSwitcherProps {
@@ -15,18 +16,21 @@ interface AccountSwitcherProps {
 }
 
 export function AccountSwitcher({ isCollapsed, accounts, loading }: AccountSwitcherProps) {
-  const [selectedAccount, setSelectedAccount] = useState<string>("")
+  const dispatch = useAppDispatch()
+
+  const { selectedAccount } = useAppSelector(selectAccountsData);
 
   const account = accounts.find((account) => account.accountId === selectedAccount)
 
   const handleSelectAccount = (accountId: string) => {
     localStorage.setItem("selectedAccount", accountId)
-    setSelectedAccount(accountId)
+    dispatch(setSelectedAccount(accountId))
   }
 
   useEffect(() => {
     const savedAccount = localStorage.getItem("selectedAccount")
-    if (savedAccount) setSelectedAccount(savedAccount)
+    console.log(savedAccount)
+    if (savedAccount) dispatch(setSelectedAccount(savedAccount))
   }, [])
 
   return (
@@ -50,7 +54,7 @@ export function AccountSwitcher({ isCollapsed, accounts, loading }: AccountSwitc
               {account ? account.name.split(" ").map((name) => name[0]).join("") : accounts[0]?.name.split(" ").map((name) => name[0]).join("")}
             </span>
           }
-          <span className={cn("ml-2", isCollapsed && "hidden")}>
+          <span className={cn("ml-2 truncate", isCollapsed && "hidden")}>
             {loading ? <Skeleton className="w-28 h-5 rounded-sm" /> : account ? account.name : accounts[0]?.name}
           </span>
         </SelectValue>

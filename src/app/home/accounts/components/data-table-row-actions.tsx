@@ -9,7 +9,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { deleteStateAccount } from "@/lib/features/accounts/accounts-slice"
+import { deleteStateAccount, setSelectedAccount } from "@/lib/features/accounts/accounts-slice"
 import { useAppDispatch } from "@/lib/hooks"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { Row } from "@tanstack/react-table"
@@ -32,7 +32,12 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
       description: 'Are you sure you want to delete this account? This action cannot be undone.',
       onConfirm: async () => {
         try {
+          const selectedAccount = localStorage.getItem('selectedAccount')
+
+          dispatch(setSelectedAccount(''))
           dispatch(deleteStateAccount((row.original as { accountId: string }).accountId))
+          if (selectedAccount === (row.original as { accountId: string }).accountId) localStorage.removeItem('selectedAccount')
+
           closeDialog()
 
           await deleteAccount((row.original as { accountId: string }).accountId)
@@ -48,7 +53,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
     setModalState({
       open: true,
       title: `Let's reconnect your LinkedIn account`,
-      description: 'We need your LinkedIn credentials to be able to interact with your account. We will never share your information with anyone.',
+      description: 'You can reconnect your LinkedIn account by entering your LinkedIn email and password or copying your LinkedIn session cookie.',
       view: <NewAccountModal />,
       payload: { reconnect: true, accountId: (row.original as { accountId: string }).accountId },
     });
